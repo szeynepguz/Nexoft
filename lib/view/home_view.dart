@@ -43,6 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   age: user.age?.toString() ?? "",
                   address: user.address?.city ?? "",
                   image: user.image ?? "",
+                  user:user,
                 );
               },
             );

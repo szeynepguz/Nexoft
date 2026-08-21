@@ -6,6 +6,7 @@ class UserController extends ChangeNotifier {
   final UserService userService = UserService();
 
   List<UserModel> users = [];
+  List<UserModel> favoriteUsers=[];
   bool isLoading = false;
 
   Future<void> getUserData() async {
@@ -19,5 +20,17 @@ class UserController extends ChangeNotifier {
     }
     isLoading = false;
     notifyListeners();
+
+  }
+  void updateFavorite(UserModel user){
+    if(favoriteUsers.contains(user)){
+      favoriteUsers.remove(user);
+    }else{
+      favoriteUsers.add(user);
+    }
+    notifyListeners();
+  }
+  bool isUserFavorite(UserModel user){
+    return favoriteUsers.contains(user);
   }
 }
