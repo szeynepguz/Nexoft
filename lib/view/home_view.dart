@@ -3,16 +3,23 @@ import 'package:nexoft/controller/user_controller.dart';
 import 'package:nexoft/widgets/home_view_widgets.dart';
 import 'package:provider/provider.dart';
 
+
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
+  
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+
 class _MyHomePageState extends State<MyHomePage> {
+  int _currentIndex = 0;
+  late PageController _pageController;
   @override
   void initState() {
+    _pageController = PageController(initialPage: _currentIndex);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final provider = Provider.of<UserController>(context, listen: false);
       await provider.getUserData();
@@ -23,34 +30,26 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Consumer<UserController>(
-          builder: (context, provider, _) {
-            if (provider.isLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: provider.users.length,
-              itemBuilder: (context, index) {
-                final user = provider.users[index];
+      body: Consumer<UserController>(builder: (context,provider,_){
+      
+         return PageView(
+          controller: _pageController,
 
-                return PostWidget(
-                  firstName: user.firstName ?? "",
-                  lastName: user.lastName ?? "",
-                  age: user.age?.toString() ?? "",
-                  address: user.address?.city ?? "",
-                  image: user.image ?? "",
-                  user:user,
-                );
-              },
-            );
+          onPageChanged: (index){
+            setState(() {
+              _currentIndex=index;
+            });
           },
-        ),
+          children: const[
+            KullanicilarSayfasi(),
+            Favoriler(),
+
+          ],
+         );
+      },
       ),
-      bottomNavigationBar: const BottomBarWidget(),
+      bottomNavigationBar: BottomBarWidget(currentIndex: 
+      _currentIndex, pageController: _pageController)
     );
   }
 }
