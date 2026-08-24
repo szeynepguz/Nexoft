@@ -30,7 +30,4 @@ class UserController extends ChangeNotifier {
     }
     notifyListeners();
   }
-  bool isUserFavorite(UserModel user){
-    return favoriteUsers.contains(user);
-  }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nexoft/controller/user_controller.dart';
+import 'package:nexoft/view/favoriler_view.dart';
+import 'package:nexoft/view/kullanicilarSayfasi_view.dart';
 import 'package:nexoft/widgets/home_view_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -7,7 +9,6 @@ import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
-  
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -30,26 +31,26 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<UserController>(builder: (context,provider,_){
-      
-         return PageView(
-          controller: _pageController,
+      body: SafeArea(
+        child: Consumer<UserController>(
+          builder: (context, provider, _) {
+            return PageView(
+              controller: _pageController,
 
-          onPageChanged: (index){
-            setState(() {
-              _currentIndex=index;
-            });
+              onPageChanged: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              children: const [KullanicilarSayfasi(), Favoriler()],
+            );
           },
-          children: const[
-            KullanicilarSayfasi(),
-            Favoriler(),
-
-          ],
-         );
-      },
+        ),
       ),
-      bottomNavigationBar: BottomBarWidget(currentIndex: 
-      _currentIndex, pageController: _pageController)
+      bottomNavigationBar: BottomBarWidget(
+        currentIndex: _currentIndex,
+        pageController: _pageController,
+      ),
     );
   }
 }
